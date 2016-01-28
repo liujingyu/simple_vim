@@ -24,6 +24,9 @@ set encoding=utf-8
 
 set shortmess=atI "去掉欢迎界面
 
+" No beeps
+set noerrorbells
+
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
 let mapleader = ","
@@ -116,9 +119,10 @@ vnoremap g<c-]> <c-]>
 
 " 删除行尾的空格
 func! DeleteTrailingWS()
-    exe "normal mz"
+    exe "normal mA"
     %s/\s\+$//ge
-    exe "normal `z"
+    exe "normal `A"
+    exe "normal dmA"
 endfunc
 
 au BufWrite *.php :call DeleteTrailingWS()
@@ -152,7 +156,7 @@ autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "php complete system function
 au FileType php set omnifunc=phpcomplete#CompletePHP
-function AddPHPFuncList()
+func! AddPHPFuncList()
     set dictionary-=~/vim/php_funclist.txt dictionary+=~/vim/php_funclist.txt
     set complete-=k complete+=k
 endfunction
@@ -206,6 +210,8 @@ Plugin 'vim-php/vim-php-refactoring'
 Plugin 'mileszs/ack.vim'
 Plugin 'ShowTrailingWhitespace'
 Plugin 'winmanager'
+Plugin 'humiaozuzu/TabBar'
+Plugin 'kshenoy/vim-signature'
 
 call vundle#end()            " required
 
@@ -372,3 +378,4 @@ highlight ShowTrailingWhitespace ctermbg=Red guibg=Red
 " ,,b<Search Character>               光标向上定位所有单词首字母
 " ,,gE<Target Key>                    光标向上定位所有单词字母末尾
 " ,,f<Search Character><Target Key>   光标向下定位所有要查找的字符
+
