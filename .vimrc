@@ -1,4 +1,3 @@
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                    基本配置                                    "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -128,6 +127,12 @@ au BufWrite *.php :call DeleteTrailingWS()
 au BufWrite *.py :call DeleteTrailingWS()
 au BufWrite *.js :call DeleteTrailingWS()
 au BufWrite *.vimrc :call DeleteTrailingWS()
+
+" 为方便复制，用<F2>开启/关闭行号显示:
+nnoremap <F2> :set nonumber!<CR>:set foldcolumn=0<CR>
+
+" 离开插入模式后自动关闭预览窗口
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                               Vundle Plugin                                "
@@ -272,7 +277,7 @@ let g:UltiSnipsSnippetsDir = '~/.vim/UltiSnips'
 let g:UltiSnipsEditSplit="vertical"
 
 "启动vim后输入:NERDTree<Enter>, 我们还可以绑定一个快捷键
-nmap <F3> :NERDTree  <CR>
+nmap <F3> :NERDTreeToggle  <CR>
 let NERDTreeWinSize = 24
 let g:NERDTreeDirArrows = 1
 let g:NERDTreeDirArrowExpandable = '▸'
@@ -326,3 +331,9 @@ call togglebg#map("<F5>")
 " ShowTrailingWhitespace
 highlight ShowTrailingWhitespace ctermbg=Red guibg=Red
 
+" vim-easymotion
+" ,,w<Target Key>                     光标向下定位所有单词首字母
+" ,,e<Target Key>                     光标向下定位所有单词尾字母
+" ,,b<Search Character>               光标向上定位所有单词首字母
+" ,,gE<Target Key>                    光标向上定位所有单词字母末尾
+" ,,f<Search Character><Target Key>   光标向下定位所有要查找的字符
