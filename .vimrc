@@ -108,9 +108,26 @@ function AddPHPFuncList()
 endfunction
 au FileType php call AddPHPFuncList()
 " You might also find this useful
-" PHP Generated Code Highlights (HTML & SQL) 
-let php_sql_query=1                                                                                        
+" PHP Generated Code Highlights (HTML & SQL)
+let php_sql_query=1
 let php_htmlInStrings=1
+
+" ctags设置
+set tags+=/Users/apple
+set autochdir
+set tags=tags;
+
+" 删除行尾的空格
+func! DeleteTrailingWS()
+    exe "normal mz"
+    %s/\s\+$//ge
+    exe "normal `z"
+endfunc
+
+au BufWrite *.php :call DeleteTrailingWS()
+au BufWrite *.py :call DeleteTrailingWS()
+au BufWrite *.js :call DeleteTrailingWS()
+au BufWrite *.vimrc :call DeleteTrailingWS()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                               Vundle Plugin                                "
@@ -148,6 +165,7 @@ Plugin 'majutsushi/tagbar'
 Plugin 'mattn/webapi-vim'
 Plugin 'vim-php/vim-php-refactoring'
 Plugin 'mileszs/ack.vim'
+Plugin 'ShowTrailingWhitespace'
 
 call vundle#end()            " required
 
@@ -235,7 +253,7 @@ else
 endif
 colorscheme solarized
 
-let g:solarized_termcolors=256  
+let g:solarized_termcolors=256
 
 if exists('$TMUX')
     set term=screen-256color
@@ -304,3 +322,7 @@ if executable('ag')
 endif
 
 call togglebg#map("<F5>")
+
+" ShowTrailingWhitespace
+highlight ShowTrailingWhitespace ctermbg=Red guibg=Red
+
