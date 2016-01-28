@@ -19,6 +19,11 @@ set cursorline
 "no bomb
 set nobomb
 set history=10000
+
+set encoding=utf-8
+
+set shortmess=atI "去掉欢迎界面
+
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
 let mapleader = ","
@@ -57,7 +62,6 @@ set tabstop=4
 " 让 vim 把连续数量的空格视为一个制表符
 set softtabstop=4
 
-
 " Set backspace config
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
@@ -74,11 +78,6 @@ else
    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
-
-
-"php手册 打开PHP文件后，把光标移动到某个函数下，按大写的K键即可查看函数的文档内容
-"利用composer 安装pman,命令 composer global require gonzaloserrano/pman-php-manual:dev-master
-au FileType php setlocal keywordprg=pman
 
 " Always hide the statusline
 set laststatus=2
@@ -99,22 +98,21 @@ endfunction
 " Format the statusline
 set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ " Line:\ %l/%L:%c
 
-"php complete system function
-au FileType php set omnifunc=phpcomplete#CompletePHP
-function AddPHPFuncList()
-    set dictionary-=~/vim/php_funclist.txt dictionary+=~/vim/php_funclist.txt
-    set complete-=k complete+=k
-endfunction
-au FileType php call AddPHPFuncList()
-" You might also find this useful
-" PHP Generated Code Highlights (HTML & SQL)
-let php_sql_query=1
-let php_htmlInStrings=1
-
 " ctags设置
-set tags+=/Users/apple
-set autochdir
-set tags=tags;
+" set tags+=/Users/apple
+" set autochdir
+set tags=tags;/
+" 生成一个tags文件
+nmap <F9> <Esc>:!ctags -R *<CR>
+
+" 设置好后，可在Vim中使用如下功能：Ctrl-]转至最佳匹配的相应Tag，Ctrl-T返回上一个匹配。
+" 如果有多个匹配，g Ctrl-]可显示所有备选的tags。如有需要，可互换Ctrl-]和g Ctrl-] [11]：
+"在普通和可视模式中，将<c-]>与g<c-]>互换
+nnoremap <c-]> g<c-]>
+vnoremap <c-]> g<c-]>
+
+nnoremap g<c-]> <c-]>
+vnoremap g<c-]> <c-]>
 
 " 删除行尾的空格
 func! DeleteTrailingWS()
@@ -133,6 +131,42 @@ nnoremap <F2> :set nonumber!<CR>:set foldcolumn=0<CR>
 
 " 离开插入模式后自动关闭预览窗口
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                     缩进                                     "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 使用自动缩进可能需要设置，vim中对自动缩进的详细设置办法见Vim代码缩进设置。
+
+" 在不同的模式中调整缩进的方法不同：
+
+" 插入模式
+" Ctrl-T增加缩进，Ctrl-D减小缩进。
+" 命令模式
+" >> 右缩进， << 左缩进，注意n<< 或 n>>是缩进多行，如4>>
+" 可视模式
+" < 、 > 用于左右缩进， n< 、 n> 可做多节缩进，如 2> 。
+" 另外，= 可对选中的部分进行自动缩进；]p可以实现p的粘贴功能，并自动缩进。
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                php settings                                "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"php complete system function
+au FileType php set omnifunc=phpcomplete#CompletePHP
+function AddPHPFuncList()
+    set dictionary-=~/vim/php_funclist.txt dictionary+=~/vim/php_funclist.txt
+    set complete-=k complete+=k
+endfunction
+au FileType php call AddPHPFuncList()
+
+" You might also find this useful
+" PHP Generated Code Highlights (HTML & SQL)
+let php_sql_query=1
+let php_htmlInStrings=1
+
+"php手册 打开PHP文件后，把光标移动到某个函数下，按大写的K键即可查看函数的文档内容
+"利用composer 安装pman,命令 composer global require gonzaloserrano/pman-php-manual:dev-master
+au FileType php setlocal keywordprg=pman
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                               Vundle Plugin                                "
@@ -171,6 +205,7 @@ Plugin 'mattn/webapi-vim'
 Plugin 'vim-php/vim-php-refactoring'
 Plugin 'mileszs/ack.vim'
 Plugin 'ShowTrailingWhitespace'
+Plugin 'winmanager'
 
 call vundle#end()            " required
 
@@ -222,7 +257,7 @@ let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 let g:NERDSpaceDelims=1
 
 " If php-cs-fixer is in $PATH, you don't need to define line below
-let g:php_cs_fixer_level = "all"                  " which level ?
+let g:php_cs_fixer_level = "psr2"                  " which level ?
 let g:php_cs_fixer_config = "default"             " configuration
 let g:php_cs_fixer_php_path = "/usr/local/bin/php"               " Path to PHP
 " If you want to define specific fixers
