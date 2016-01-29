@@ -47,6 +47,8 @@ Plugin 'humiaozuzu/TabBar'
 Plugin 'kshenoy/vim-signature'
 Plugin 'terryma/vim-expand-region'
 Plugin 'rayburgemeestre/phpfolding.vim'
+Plugin 'tobyS/vmustache'
+Plugin 'tobyS/pdv'
 
 call vundle#end()            " required
 
@@ -219,3 +221,6 @@ let g:airline_theme='solarized'
 map <F5> <Esc>:EnableFastPHPFolds<Cr>
 map <F6> <Esc>:EnablePHPFolds<Cr>
 map <F7> <Esc>:DisablePHPFolds<Cr>
+
+let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates_snip"
+nnoremap <buffer> <C-p> :call pdv#DocumentWithSnip()<CR>
