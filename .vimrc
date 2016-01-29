@@ -46,6 +46,7 @@ Plugin 'winmanager'
 Plugin 'humiaozuzu/TabBar'
 Plugin 'kshenoy/vim-signature'
 Plugin 'terryma/vim-expand-region'
+Plugin 'rayburgemeestre/phpfolding.vim'
 
 call vundle#end()            " required
 
@@ -199,8 +200,6 @@ if executable('ag')
     let g:ackprg = 'ag --vimgrep'
 endif
 
-call togglebg#map("<F5>")
-
 " ShowTrailingWhitespace
 highlight ShowTrailingWhitespace ctermbg=Red guibg=Red
 
@@ -217,3 +216,6 @@ vmap <C-v> <Plug>(expand_region_shrink)
 " airline-themes
 let g:airline_theme='solarized'
 
+map <F5> <Esc>:EnableFastPHPFolds<Cr>
+map <F6> <Esc>:EnablePHPFolds<Cr>
+map <F7> <Esc>:DisablePHPFolds<Cr>
