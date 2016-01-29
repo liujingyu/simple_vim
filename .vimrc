@@ -107,7 +107,7 @@ let g:php_cs_fixer_php_path = "/usr/local/bin/php"               " Path to PHP
 let g:php_cs_fixer_fixers_list = "linefeed,short_tag,indentation"
 let g:php_cs_fixer_enable_default_mapping = 1     " Enable the mapping by default (<leader>pcd)
 let g:php_cs_fixer_dry_run = 0                    " Call command with dry-run option
-let g:php_cs_fixer_verbose = 0"
+let g:php_cs_fixer_verbose = 0
 
 let g:user_emmet_mode='n'    "only enable normal mode functions.
 let g:user_emmet_mode='inv'  "enable all functions, which is equal to
@@ -218,9 +218,13 @@ vmap <C-v> <Plug>(expand_region_shrink)
 " airline-themes
 let g:airline_theme='solarized'
 
+" php fold
 map <F5> <Esc>:EnableFastPHPFolds<Cr>
 map <F6> <Esc>:EnablePHPFolds<Cr>
 map <F7> <Esc>:DisablePHPFolds<Cr>
+let g:DisableAutoPHPFolding = 1
+let g:Tb_MapCTabSwitchWindows = 2
 
 let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates_snip"
 nnoremap <buffer> <C-p> :call pdv#DocumentWithSnip()<CR>
+
