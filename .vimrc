@@ -42,7 +42,6 @@ Plugin 'mattn/webapi-vim'
 Plugin 'vim-php/vim-php-refactoring'
 Plugin 'mileszs/ack.vim'
 Plugin 'ShowTrailingWhitespace'
-Plugin 'winmanager'
 Plugin 'humiaozuzu/TabBar'
 Plugin 'kshenoy/vim-signature'
 Plugin 'terryma/vim-expand-region'
@@ -178,8 +177,10 @@ call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
 call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
 call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
 
+" json
 let g:vim_json_syntax_conceal = 1
 
+" ctrlp
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:15,results:15'
 let g:ctrlp_max_depth = 40
 let g:ctrlp_max_files = 20000
@@ -212,8 +213,9 @@ highlight ShowTrailingWhitespace ctermbg=Red guibg=Red
 " ,,gE<Target Key>                    光标向上定位所有单词字母末尾
 " ,,f<Search Character><Target Key>   光标向下定位所有要查找的字符
 
-vmap v <Plug>(expand_region_expand)
-vmap <C-v> <Plug>(expand_region_shrink)
+" 多光标键位冲突
+" vmap v <Plug>(expand_region_expand)
+" vmap <C-v> <Plug>(expand_region_shrink)
 
 " airline-themes
 let g:airline_theme='solarized'
@@ -225,6 +227,46 @@ map <F7> <Esc>:DisablePHPFolds<Cr>
 let g:DisableAutoPHPFolding = 1
 let g:Tb_MapCTabSwitchWindows = 2
 
-let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates_snip"
-nnoremap <buffer> <C-p> :call pdv#DocumentWithSnip()<CR>
+" pdv 与 ctrlp 冲突,键位待定
+" let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates_snip"
+" nnoremap <buffer> <C-p> :call pdv#DocumentWithSnip()<CR>
 
+" scrooloose/syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
+
+nnoremap <silent> <C-d> :lclose<CR>:bdelete<CR>
+cabbrev <silent> bd <C-r>=(getcmdtype()==#':' && getcmdpos()==1 ? 'lclose\|bdelete' : 'bd')<CR>
+
+" multiple_cursors_cursor
+" Default highlighting (see help :highlight and help :highlight-link)
+highlight multiple_cursors_cursor term=reverse cterm=reverse gui=reverse
+highlight link multiple_cursors_visual Visual
+
+" Called once right before you start selecting multiple cursors
+" function! Multiple_cursors_before()
+    " if exists(':NeoCompleteLock')==2
+        " exe 'NeoCompleteLock'
+    " endif
+" endfunction
+
+" Called once only when the multiple selection is canceled (default <Esc>)
+" function! Multiple_cursors_after()
+    " if exists(':NeoCompleteUnlock')==2
+        " exe 'NeoCompleteUnlock'
+    " endif
+" endfunction
+
+" Map start key separately from next key
+" let g:multi_cursor_start_key='<F8>'
+
+let g:multi_cursor_quit_key='<C-c>'
+nnoremap <C-c> :call multiple_cursors#quit()<CR>
