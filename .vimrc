@@ -39,15 +39,14 @@ Plugin 'leshill/vim-json'
 Plugin 'kien/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'mattn/webapi-vim'
-Plugin 'vim-php/vim-php-refactoring'
+" Plugin 'vim-php/vim-php-refactoring'
 Plugin 'mileszs/ack.vim'
 Plugin 'ShowTrailingWhitespace'
-Plugin 'humiaozuzu/TabBar'
+" Plugin 'humiaozuzu/TabBar'
 Plugin 'kshenoy/vim-signature'
 Plugin 'terryma/vim-expand-region'
-Plugin 'rayburgemeestre/phpfolding.vim'
-Plugin 'tobyS/vmustache'
-Plugin 'tobyS/pdv'
+Plugin 'fatih/vim-go'
+Plugin 'junegunn/vim-easy-align'
 
 call vundle#end()            " required
 
@@ -58,7 +57,6 @@ call vundle#end()            " required
 
 let g:ycm_key_list_select_completion = ['<c-p>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<c-n>', '<Up>']
-let g:ycm_use_ultisnips_completer = 1
 let g:ycm_cache_omnifunc = 1
 nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
@@ -66,6 +64,7 @@ nnoremap <leader>gg :YcmCompleter GoToDefinitionElseDeclaration<CR>
 let g:ycm_error_symbol = '>>'
 let g:ycm_warning_symbol = '>>'
 let g:ycm_enable_diagnostic_signs = 1
+let g:syntastic_ignore_files=[".*\.py$", ".*\.php$"]
 let g:ycm_filetype_blacklist = {
       \ 'tagbar' : 1,
       \ 'qf' : 1,
@@ -80,20 +79,23 @@ let g:ycm_filetype_blacklist = {
       \}
 let g:ycm_semantic_triggers =  {
   \   'c' : ['->', '.'],
-  \   'objc' : ['->', '.'],
-  \   'ocaml' : ['.', '#'],
   \   'cpp,objcpp' : ['->', '.', '::'],
-  \   'perl' : ['->'],
   \   'php' : ['->', '::'],
-  \   'cs,java,javascript,d,python,perl6,scala,vb,elixir,go' : ['.'],
   \   'vim' : ['re![_a-zA-Z]+[_\w]*\.'],
   \   'ruby' : ['.', '::'],
   \   'lua' : ['.', ':'],
-  \   'erlang' : [':'],
   \ }
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g:ycm_min_num_of_chars_for_completion = 1
+let g:ycm_min_num_of_chars_for_completion = 2
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+" 在注释中也可以补全
+let g:ycm_complete_in_comments=1
+" 不查询ultisnips提供的代码模板补全，如果需要，设置成1即可
+let g:ycm_use_ultisnips_completer=1
+" 使用ctags生成的tags文件
+let g:ycm_collect_identifiers_from_tag_files = 1
+let g:ycm_auto_trigger = 0
+
 
 " 注释的时候自动加个空格, 强迫症必配
 let g:NERDSpaceDelims=1
@@ -193,6 +195,35 @@ let g:ctrlp_custom_ignore = {
  let g:ctrlp_extensions = ['line', 'tag', 'bookmarkdir', 'utils']
 nmap <F4> :TagbarToggle<CR>
 let g:Tb_MaxSize = 2
+let g:tagbar_type_go = {
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+\ }
+
+
 
 let g:php_refactor_command='refactor'
 
@@ -270,3 +301,46 @@ highlight link multiple_cursors_visual Visual
 
 let g:multi_cursor_quit_key='<C-c>'
 nnoremap <C-c> :call multiple_cursors#quit()<CR>
+
+set regexpengine=1
+
+"vim-go
+" let g:go_highlight_functions = 1
+" let g:go_highlight_methods = 1
+" let g:go_highlight_structs = 1
+" let g:go_highlight_interfaces = 1
+" let g:go_highlight_operators = 1
+" let g:go_highlight_build_constraints = 1
+" let g:go_fmt_command = "goimports"
+
+" let g:go_term_enabled = 1
+" let g:go_term_mode = "split"
+
+
+" let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+" let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+
+" au FileType go nmap <leader>r <Plug>(go-run)
+" au FileType go nmap <leader>b <Plug>(go-build)
+" au FileType go nmap <leader>t <Plug>(go-test)
+" au FileType go nmap <leader>c <Plug>(go-coverage)
+
+" au FileType go nmap <Leader>ds <Plug>(go-def-split)
+" au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+" au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+
+" if exists("g:did_load_filetypes")
+    " filetype off
+    " filetype plugin indent off
+" endif
+
+set runtimepath+=$GOROOT/misc/vim
+
+set relativenumber
+
+set tags=./tags;/
+augroup TagFileType
+    autocmd!
+    autocmd FileType * setl tags<
+    autocmd FileType * exe 'setl tags+=~/.ctags/' . &filetype . '/*/tags'
+augroup END
