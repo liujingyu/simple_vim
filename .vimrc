@@ -47,6 +47,7 @@ Plugin 'kshenoy/vim-signature'
 Plugin 'terryma/vim-expand-region'
 Plugin 'fatih/vim-go'
 Plugin 'junegunn/vim-easy-align'
+Plugin 'chase/vim-ansible-yaml'
 
 call vundle#end()            " required
 
@@ -344,3 +345,9 @@ augroup TagFileType
     autocmd FileType * setl tags<
     autocmd FileType * exe 'setl tags+=~/.ctags/' . &filetype . '/*/tags'
 augroup END
+
+" align
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
