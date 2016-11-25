@@ -24,6 +24,7 @@ Plugin 'bling/vim-airline'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'scrooloose/nerdtree'
 Plugin 'anyakichi/vim-surround'
+Plugin 'tpope/vim-repeat'
 Plugin 'Raimondi/delimitMate'
 Plugin 'scrooloose/syntastic'
 Plugin 'easymotion/vim-easymotion'
@@ -47,7 +48,8 @@ Plugin 'kshenoy/vim-signature'
 Plugin 'terryma/vim-expand-region'
 Plugin 'fatih/vim-go'
 Plugin 'junegunn/vim-easy-align'
-Plugin 'chase/vim-ansible-yaml'
+Plugin 'jaxbot/semantic-highlight.vim'
+Plugin 'posva/vim-vue'
 
 call vundle#end()            " required
 
@@ -253,11 +255,11 @@ highlight ShowTrailingWhitespace ctermbg=Red guibg=Red
 let g:airline_theme='solarized'
 
 " php fold
-map <F5> <Esc>:EnableFastPHPFolds<Cr>
-map <F6> <Esc>:EnablePHPFolds<Cr>
-map <F7> <Esc>:DisablePHPFolds<Cr>
-let g:DisableAutoPHPFolding = 1
-let g:Tb_MapCTabSwitchWindows = 2
+" map <F5> <Esc>:EnableFastPHPFolds<Cr>
+" map <F6> <Esc>:EnablePHPFolds<Cr>
+" map <F7> <Esc>:DisablePHPFolds<Cr>
+" let g:DisableAutoPHPFolding = 1
+" let g:Tb_MapCTabSwitchWindows = 2
 
 " pdv 与 ctrlp 冲突,键位待定
 " let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates_snip"
@@ -269,11 +271,14 @@ set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 0
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 0
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
+let g:syntastic_html_checkers = []
+let g:syntastic_javascript_checkers = ['eslint']
+
 
 nnoremap <silent> <C-d> :lclose<CR>:bdelete<CR>
 cabbrev <silent> bd <C-r>=(getcmdtype()==#':' && getcmdpos()==1 ? 'lclose\|bdelete' : 'bd')<CR>
@@ -351,3 +356,15 @@ augroup END
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+
+let g:ansible_options = {'ignore_blank_lines': 0}
+
+" json 文件格式化
+map <F9> <Esc>:%!python -m json.tool<CR>
+
+
+" 粘贴模式
+nnoremap <F5> :set invpaste paste?<CR>
+set pastetoggle=<F5>
+set showmode
+
