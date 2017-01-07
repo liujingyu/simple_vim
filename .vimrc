@@ -50,6 +50,8 @@ Plugin 'fatih/vim-go'
 Plugin 'junegunn/vim-easy-align'
 Plugin 'jaxbot/semantic-highlight.vim'
 Plugin 'posva/vim-vue'
+Plugin 'isRuslan/vim-es6'
+
 
 call vundle#end()            " required
 
